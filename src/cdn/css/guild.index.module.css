@@ -1,0 +1,37 @@
+.content {
+	width: calc(100% - 5rem * 2);
+	padding: 1rem 5rem;
+	overflow: hidden;
+}
+.prefix {
+	background: var(--alt-background);
+	color: var(--color);
+	border: none;
+	height: calc(2rem - .5rem * 2);
+	width: calc(100% - .5rem * 2);
+	padding: .5rem;
+	font-size: 100%;
+}
+.container {
+	width: calc(100% - .5rem * 2);
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	padding: .5rem;
+}
+.container h4 {
+	margin: 0 .25rem;
+	background: var(--alt-background);
+	border-radius: .25rem;
+	color: var(--alt-color);
+}
+.container h4 b {
+	font-weight: bolder;
+	color: var(--color);
+}
+@media screen and (max-width: 1195px) {
+	.content {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem;
+	}
+}

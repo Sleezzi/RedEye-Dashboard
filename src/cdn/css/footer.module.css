@@ -1,0 +1,57 @@
+.footer {
+	background: #3F3F3F;
+	--color: #FFF;
+	width: 100%;
+}
+.container {
+	width: calc(100% - 5rem * 2);
+	padding: 2rem 5rem;
+	display: flex;
+	align-items: start;
+	justify-content: space-evenly;
+}
+.container > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: start;
+}
+.footer h5 {
+	font-size: 90%;
+}
+.footer h5, .footer p {
+	margin: 0;
+}
+.footer .right {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #00000050;
+	color: var(--color);
+	width: calc(100% - 1rem * 2);
+	padding: 1rem;
+	text-align: center;
+}
+.footer a {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+.footer img {
+	width: 1.25rem;
+}
+@media screen and (max-width: 1195px) {
+	.container {
+		flex-direction: column;
+	}
+	.container > div {
+		margin: 1rem;
+	}
+	.container h4,
+	.container h5,
+	.container p,
+	.container a {
+		margin: 0;
+		padding: 0;
+	}
+}

@@ -1,0 +1,7 @@
+# Hello you. It seems that you are lost
+
+User-agent: *
+Disallow: /
+Disallow: /404
+
+Sitemap: https://sidemap.xml

@@ -1,0 +1,57 @@
+.sidenav {
+	position: relative;
+	left: 0;
+	top: 0;
+	height: calc(100% - 1rem * 2);
+	width: calc(15rem - 1.5rem * 2);
+	padding: 1rem 1.5rem;
+	background: var(--alt-background);
+	border-right: 1px solid var(--alt-background);
+	transition: left .5s ease;
+	z-index: 2;
+}
+.sidenav a {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 3rem;
+	width: 100%;
+	color: var(--color);
+	text-align: start;
+}
+.sidenav a.active {
+	color: var(--main-color);
+}
+.sidenav a span {
+	width: 10%;
+}
+.sidenav a h3 {
+	width: 70%;
+}
+
+#close {
+	display: none;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 3;
+
+}
+#close.active {
+	display: block;
+}
+
+@media screen and (max-width: 1195px) {
+	.sidenav {
+		position: fixed;
+		left: -100%;
+		z-index: 3;
+	}
+	.sidenav.active {
+		left: 0;
+	}
+}

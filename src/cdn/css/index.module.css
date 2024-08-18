@@ -1,0 +1,129 @@
+#header {
+	background: var(--alt-background);
+	height: 5rem;
+	width: 100%;
+	position: fixed;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 2;
+}
+#margin {
+	height: 5rem;
+	width: 100%;
+}
+#header a {
+	color: var(--color);
+	text-decoration: none;
+	transition: color .5s ease;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--alt-background);
+	border-radius: .5rem;
+	margin: 1rem;
+	height: 50%;
+	transition: background .5s ease;
+}
+#header a:hover {
+	background: var(--alt-2-background);
+}
+#header h3 {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+	font-family: "Kanit", sans-serif;
+}
+#header img {
+	height: 2rem;
+}
+#disconnect {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 2.5rem;
+	width: 2.5rem;
+	border-radius: 100vh;
+	color: var(--color);
+	background: #00000050;
+	transition: background .5s ease, color .5s ease;
+}
+#disconnect:hover {
+	color: white;
+	background: red;
+}
+main.container {
+	width: calc(100% - 5rem * 2);
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 12rem);
+	gap: 1rem 1rem;
+	justify-content: center;
+	justify-items: center;
+	align-items: start;
+	padding: 5rem 5rem;
+}
+.guild {
+	background: var(--alt-background);
+	height: 10rem;
+	width: 12rem;
+	overflow: hidden;
+	position: relative;
+	padding: 0;
+	border-radius: .75rem;
+	transition: background .5s ease;
+}
+.guild .banner {
+	background: black;
+	width: 100%;
+	height: 45%;
+}
+.guild .icon {
+	border-radius: 50%;
+	position: absolute;
+	top: calc(20% - .25rem);
+	left: calc(5% - .25rem);
+	height: 4.5rem;
+	width: 4.5rem;
+	border: .25rem solid var(--alt-background);
+	background: var(--background);
+	color: var(--color);
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: border .5s ease;
+}
+.guild h3 {
+	position: absolute;
+	margin: 0;
+	bottom: 7%;
+	left: calc(100% - 90%  - .25rem * 2);
+	width: calc(90% - .25rem * 2);
+	padding: .25rem;
+	white-space: nowrap;
+	background: #00000050;
+	border-radius: .5rem;
+	color: var(--alt-color);
+	text-overflow: ellipsis;
+	overflow: hidden;
+	transition: color .5s ease;
+}
+.role {
+	width: 1.5rem;
+	height: 1.5rem;
+	position: absolute;
+	right: 1rem;
+	bottom: 3.5rem;
+	border-radius: .25rem;
+}
+.guild:hover {
+	background: var(--alt-2-background);
+}
+
+.guild:hover .icon {
+	border: .25rem solid var(--alt-2-background);
+}
+.guild:hover h3 {
+	color: var(--color);
+}
