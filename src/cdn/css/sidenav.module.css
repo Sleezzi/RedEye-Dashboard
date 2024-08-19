@@ -49,7 +49,7 @@
 	.sidenav {
 		position: fixed;
 		left: -100%;
-		z-index: 3;
+		z-index: 4;
 	}
 	.sidenav.active {
 		left: 0;

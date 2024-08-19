@@ -53,6 +53,7 @@
 	background: red;
 }
 main.container {
+	height: calc(100% - 5rem * 2 - 5rem);
 	width: calc(100% - 5rem * 2);
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 12rem);
@@ -60,7 +61,7 @@ main.container {
 	justify-content: center;
 	justify-items: center;
 	align-items: start;
-	padding: 5rem 5rem;
+	padding: 5rem;
 }
 .guild {
 	background: var(--alt-background);

@@ -1,6 +1,6 @@
 {
-  "name": "doc-gamer-memorial",
-  "homepage": "https://docgamer.sleezzi.fr",
+  "name": "manage-redeye",
+  "homepage": "https://manage-redeye.sleezzi.fr",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

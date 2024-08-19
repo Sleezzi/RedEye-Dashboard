@@ -27,7 +27,7 @@ function Guild({ auth }) {
 			}
 			if (response.status === 404) {
 				localStorage.setItem("redirect", window.location.href);
-				window.location.href = `https://discord.com/oauth2/authorize?client_id=1232706723148726373&permissions=1153933091732599&response_type=token&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2F%23%2F&integration_type=0&scope=identify+bot&guild_id=${guildId}`;
+				window.location.href = `https://discord.com/oauth2/authorize?client_id=1232706723148726373&permissions=1153933091732599&response_type=token&redirect_uri=https%3A%2F%2Fmanage-redeye.sleezzi.fr&integration_type=0&scope=identify+bot&guild_id=${guildId}`;
 				return;
 			}
 			response.id = guildId;
