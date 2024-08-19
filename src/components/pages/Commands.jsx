@@ -12,7 +12,7 @@ function Moderation({ auth }) {
 	});
 	const [commands, setCommands] = useState({...commandsStatic});
 	useEffect(() => {
-		fetch(`https://api-redeye.sleezzi.fr/commands?id=${guild.id}`, {
+		fetch(`http://48530.site.bot-hosting.net/commands?id=${guild.id}`, {
 			headers: {
 				Authorization: auth.token
 			}
@@ -24,7 +24,7 @@ function Moderation({ auth }) {
 		});
 	}, []);
 	const save = async () => {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/commands/disabled?id=${guild.id}`, {
+		const response = await fetch(`http://48530.site.bot-hosting.net/commands/disabled?id=${guild.id}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -44,9 +44,9 @@ function Moderation({ auth }) {
 			<h2>Commands</h2>
 			<div className={styles.disabled_cmd}>{
 				commands.disabled.map(command => <button key={command} onClick={(e) => {
-					const newCommandsData = {...commands};
-					newCommandsData.disabled.splice(newCommandsData.disabled.findIndex(cmd => cmd === e.target.innerText), 1);
-					setCommands(newCommandsData);
+					const newCommandsData = [...commands.disabled];
+					newCommandsData.splice(newCommandsData.findIndex(cmd => cmd === e.target.innerText), 1);
+					setCommands(cmd => ({...cmd, disabled: newCommandsData}));
 				}}>{command}</button>) || "Please wait..."
 			}</div>
 			<div>

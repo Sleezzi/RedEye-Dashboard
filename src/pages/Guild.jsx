@@ -14,7 +14,7 @@ function Guild({ auth }) {
 		tickets: {}
 	});
 	useEffect(() => {
-		fetch(`https://api-redeye.sleezzi.fr/guild?id=${guildId}`, {
+		fetch(`http://48530.site.bot-hosting.net/guild?id=${guildId}`, {
 			headers: {
 				Authorization: auth.token
 			}

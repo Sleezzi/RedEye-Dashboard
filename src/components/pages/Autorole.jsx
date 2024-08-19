@@ -14,7 +14,7 @@ function Autorole({ auth }) {
 	useEffect(() => guild.roles ? setRoles(guild.roles) : undefined, [guild.roles]);
 	
 	const save = async () => {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+		const response = await fetch(`http://48530.site.bot-hosting.net/modules?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

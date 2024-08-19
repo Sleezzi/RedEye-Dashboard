@@ -18,7 +18,7 @@ function Moderation({ auth }) {
 	useEffect(() => setModules(guild.modules), [guild.modules]);
 	
 	const save = async () => {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+		const response = await fetch(`http://48530.site.bot-hosting.net/modules?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -93,9 +93,11 @@ function Moderation({ auth }) {
 					<p>Lorsqu'un message est envoyé et qu'il contient un link le message est supprimé et renvoyé sans le lien</p>
 				</div>
 
-				<button onClick={() => setModules(mods => ({...mods, link: {
+				<button onClick={() => setModules(mods => ({...mods, link: mods.link ? {
 						active: !mods.link.active,
 						ignore: mods.link.ignore
+					} : {
+						active: true
 					}
 				}))} className={`switch ${modules.link && modules.link.active ? "active" : ""}`} />
 			</section>
