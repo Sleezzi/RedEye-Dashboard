@@ -162,7 +162,7 @@ const leave = {
 	}
 }
 
-function Annoucements({ auth }) {
+function Annoucements({ auth, notify }) {
 	const { guild, setGuild } = useOutletContext();
 	const [modules, setModules] = useState(guild.modules || {
 		join: {
@@ -190,7 +190,7 @@ function Annoucements({ auth }) {
 	useEffect(() => guild.channels ? setChannels(guild.channels) : undefined, [guild.channels]);
 	
 	const save = async () => {
-		const response = await fetch(`http://48530.site.bot-hosting.net/modules?id=${guild.id}`, {
+		const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -203,7 +203,9 @@ function Annoucements({ auth }) {
 				modules: modules
 			}));
 			return "Success";
-		} else return "Error";
+		}
+		notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+		return "Error";
 	}
 	useEffect(() => {
 		(async () => {

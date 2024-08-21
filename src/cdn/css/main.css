@@ -118,6 +118,9 @@ aria-label::after {
 	opacity: 1;
 	display: flex;
 }
+* {
+	z-index: 1;
+}
 .switch {
 	position: relative;
 	width: 2.5rem;

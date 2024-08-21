@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild.commands.module.css";
 import Save from "../Save";
 
-function Moderation({ auth }) {
+function Commands({ auth, notify }) {
 	const { guild } = useOutletContext();
 	const [commandsStatic, setCommandsStatic] = useState({
 		app: [],
@@ -12,30 +12,39 @@ function Moderation({ auth }) {
 	});
 	const [commands, setCommands] = useState({...commandsStatic});
 	useEffect(() => {
-		fetch(`http://48530.site.bot-hosting.net/commands?id=${guild.id}`, {
-			headers: {
-				Authorization: auth.token
-			}
-		})
-		.then(response => response.json())
-		.then(response => {
-			setCommands(response);
-			setCommandsStatic({...response});
-		});
+		try {
+			fetch(`https://api-redeye.sleezzi.fr/commands?id=${guild.id}`, {
+				headers: {
+					Authorization: auth.token
+				}
+			})
+			.then(response => response.json())
+			.then(response => {
+				setCommands(response);
+				setCommandsStatic({...response});
+			});
+		} catch (error) {
+			notify("Error", "An error has occurred: Unable to load bot commands", 5);
+		}
 	}, []);
 	const save = async () => {
-		const response = await fetch(`http://48530.site.bot-hosting.net/commands/disabled?id=${guild.id}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: auth.token
-			},
-			body: JSON.stringify(commands.disabled)
-		});
-		if (response.status === 200) {
-			setCommandsStatic(cmd => ({...cmd, disabled: commands}));
-			return "Success";
-		} else {
+		try {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/commands/disabled?id=${guild.id}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: auth.token
+				},
+				body: JSON.stringify(commands.disabled)
+			});
+			if (response.status === 200) {
+				setCommandsStatic(cmd => ({...cmd, disabled: commands}));
+				return "Success";
+			}
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		} catch (error) {
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
@@ -74,4 +83,4 @@ function Moderation({ auth }) {
 	);
 }
 
-export default Moderation;
+export default Commands;

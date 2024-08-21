@@ -110,7 +110,7 @@ const addImage = async (url) => {
 		image.src = url;
 	});
 }
-function Autorole({ auth }) {
+function Levels({ auth, notify }) {
 	const { guild, setGuild } = useOutletContext();
 	const [modules, setModules] = useState(guild.modules || {
 		levels: {
@@ -197,20 +197,27 @@ function Autorole({ auth }) {
 		})();
 	}, []);
 	const save = async () => {
-		const response = await fetch(`http://48530.site.bot-hosting.net/modules?id=${guild.id}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: auth.token
-			},
-			body: JSON.stringify(modules)
-		});
-		if (response.status === 200) {
-			setGuild(oldGuild => ({...oldGuild,
-				modules: modules
-			}));
-			return "Success";
-		} else return "Error";
+		try {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: auth.token
+				},
+				body: JSON.stringify(modules)
+			});
+			if (response.status === 200) {
+				setGuild(oldGuild => ({...oldGuild,
+					modules: modules
+				}));
+				return "Success";
+			}
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		} catch (error) {
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		}
 	}
 	return (
 		<main className={styles.content}>
@@ -231,4 +238,4 @@ function Autorole({ auth }) {
 	);
 }
 
-export default Autorole;
+export default Levels;

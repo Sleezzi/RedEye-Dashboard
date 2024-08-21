@@ -18,7 +18,7 @@ function Login({ auth, setAuth }) {
 		window.location.href = "/#/";
 		window.location.reload();
 	} else {
-		window.location.href = "https://discord.com/oauth2/authorize?client_id=1232706723148726373&response_type=token&redirect_uri=https%3A%2F%2Fmanage-redeye.sleezzi.fr&integration_type=0&scope=guilds+identify";
+		window.location.href = "https://discord.com/oauth2/authorize?client_id=1195058289931726848&response_type=token&redirect_uri=https%3A%2F%2Fmanage-redeye.sleezzi.fr&integration_type=0&scope=guilds+identify";
 	}
 	return (<>
 		Please wait...

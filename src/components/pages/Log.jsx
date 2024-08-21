@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild.log.module.css";
 import Save from "../Save";
 
-function Log({ auth }) {
+function Log({ auth, notify }) {
 	const { guild, setGuild } = useOutletContext();
 	const [channels, setChannels] = useState([{ id: "0", name: "Please wait...", type: 0, permissions: 0 }]);
 	const [modules, setModules] = useState(guild.modules || {
@@ -14,20 +14,27 @@ function Log({ auth }) {
 	useEffect(() => guild.channels ? setChannels(guild.channels) : undefined, [guild.channels]);
 	
 	const save = async () => {
-		const response = await fetch(`http://48530.site.bot-hosting.net/modules?id=${guild.id}`, {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: auth.token
-			},
-			body: JSON.stringify(modules)
-		});
-		if (response.status === 200) {
-			setGuild(oldGuild => ({...oldGuild,
-				modules: modules
-			}));
-			return "Success";
-		} else return "Error";
+		try {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: auth.token
+				},
+				body: JSON.stringify(modules)
+			});
+			if (response.status === 200) {
+				setGuild(oldGuild => ({...oldGuild,
+					modules: modules
+				}));
+				return "Success";
+			}
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		} catch (error) {
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		}
 	}
 	return (
 		<main className={styles.content}>

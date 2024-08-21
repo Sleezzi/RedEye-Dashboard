@@ -1,6 +1,8 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import Notify from "./components/Notify";
+
 import NotFound from "./pages/404";
 import Login from "./pages/Login";
 import Index from "./pages/Index";
@@ -19,14 +21,6 @@ import "./cdn/css/main.css";
 function App() {
 	const location = useLocation();
 	useEffect(() => {
-		const redirect = localStorage.getItem("redirect")
-		if (redirect) {
-			localStorage.removeItem("redirect");
-			window.location.href = redirect;
-			window.location.reload();
-		}
-	}, []);
-	useEffect(() => {
 		if (location.pathname.split("/").pop().length > 0) {
 			if (document.querySelector("body > #root > #ERROR_404")) {
 				document.title = `Redeye - Unable to find the requested page`;
@@ -42,26 +36,36 @@ function App() {
 		token: undefined,
 		expireAt: 0
 	});
+	const [notifications, setNotifications] = useState([]);
+	
 	useEffect(() => {
 		localStorage.setItem("auth", JSON.stringify(auth));
 	}, [auth]);
-	
+
 	if (!auth.token || auth.expireAt <= Math.floor(Date.now() / 1000)) return (<Login auth={auth} setAuth={setAuth} />);
+
+	const notify = (title, message, duration) => {
+		if (!title || !message || !duration) return;
+		const newNotifications = [...notifications];
+		newNotifications.push({ title, message, duration });
+		setNotifications(newNotifications);
+	}
 	
 	return (<>
 		<Routes>
 			<Route path="" element={<Index auth={auth} />}/>
-			<Route path="guild/:guildId"  element={<Guild auth={auth} />}>
-				<Route path="" element={<GuildIndexComponent auth={auth} />}/>
-				<Route path="moderation" element={<ModerationComponent auth={auth} />}/>
-				<Route path="commands" element={<CommandsComponent auth={auth} />}/>
-				<Route path="levels" element={<LevelsComponent auth={auth} />}/>
-				<Route path="annoucements"  element={<AnnoucementsComponent auth={auth} />} />
-				<Route path="autorole" element={<AutoroleComponent auth={auth} />}/>
-				<Route path="log" element={<LogComponent auth={auth} />}/>
+			<Route path="guild/:guildId"  element={<Guild auth={auth} notify={notify} />}>
+				<Route path="" element={<GuildIndexComponent auth={auth} notify={notify} />}/>
+				<Route path="moderation" element={<ModerationComponent auth={auth} notify={notify} />}/>
+				<Route path="commands" element={<CommandsComponent auth={auth} notify={notify} />}/>
+				<Route path="levels" element={<LevelsComponent auth={auth} notify={notify} />}/>
+				<Route path="annoucements"  element={<AnnoucementsComponent auth={auth} notify={notify} />} />
+				<Route path="autorole" element={<AutoroleComponent auth={auth} notify={notify} />}/>
+				<Route path="log" element={<LogComponent auth={auth} notify={notify} />}/>
 			</Route>
 			<Route path="*" element={<NotFound />}/>
 		</Routes>
+		<Notify notifications={notifications} setNotifications={setNotifications} />
 	</>);
 }
 

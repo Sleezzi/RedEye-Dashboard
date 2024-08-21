@@ -3,22 +3,29 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild.index.module.css";
 import Save from "../Save";
 
-function Index({ auth }) {
+function Index({ auth, notify }) {
 	const { guild,setGuild } = useOutletContext();
 	const [prefix, setPrefix] = useState(guild.prefix);
 	const save = async () => {
-		const response = await fetch(`http://48530.site.bot-hosting.net/guild/setPrefix?id=${guild.id}&prefix=${prefix}`, {
-			method: "PUT",
-			headers: {
-				Authorization: auth.token
+		try {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/guild/setPrefix?id=${guild.id}&prefix=${prefix}`, {
+				method: "PUT",
+				headers: {
+					Authorization: auth.token
+				}
+			});
+			if (response.status === 200) {
+				setGuild(oldGuild => ({...oldGuild,
+					prefix: prefix
+				}));
+				return "Success";
 			}
-		});
-		if (response.status === 200) {
-			setGuild(oldGuild => ({...oldGuild,
-				prefix: prefix
-			}));
-			return "Success";
-		} else return "Error";
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		} catch (error) {
+			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
+			return "Error";
+		}
 	}
 	
 	useEffect(() => setPrefix(guild.prefix), [guild.prefix]);
