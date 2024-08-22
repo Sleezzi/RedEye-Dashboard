@@ -223,7 +223,7 @@ function Levels({ auth, notify }) {
 		<main className={styles.content}>
 			<h2>Levels</h2>
 			<div className={styles.container}>
-				<h4>Active le système de leveling : </h4>
+				<h4>Activate the leveling system:</h4>
 				<button onClick={() => setModules(mods => ({...mods, levels: mods.levels ? {
 						active: !mods.levels.active,
 						ignore: mods.levels.ignore

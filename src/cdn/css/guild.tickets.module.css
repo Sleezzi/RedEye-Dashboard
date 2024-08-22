@@ -1,0 +1,91 @@
+.content {
+	width: calc(100% - 5rem * 2);
+	padding: 1rem 5rem;
+	overflow: hidden auto;
+}
+.containerSearch {
+	display: flex;
+	width: calc(100% - 1rem * 2);
+	justify-content: space-between;
+	padding: 1rem;
+}
+.search {
+	width: 80%;
+}
+.containerSearch select {
+	padding: .5rem;
+	width: 10rem;
+	text-align: center;
+}
+.userContainer {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.profile {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+}
+.profile img {
+	border-radius: 100%;
+	border: .2rem solid var(--alt-color);
+	height: 3rem;
+}
+.ticketsContainer {
+	width: 100%;
+}
+.ticket {
+	min-height: calc(1rem * 2 + 1rem);
+	width: calc(100% - 1rem * 2);
+	padding: 1rem;
+	margin: 1rem 0;
+	background: var(--alt-background);
+	border-radius: .5rem;
+	position: relative;
+}
+.ticket .remove {
+	position: absolute;
+	top: calc(1rem - .25rem * 2);
+	right: calc(1rem - .25rem * 2);
+	margin: 0;
+	padding: .25rem;
+	color: var(--color);
+	transition: color .5s ease;
+}
+.ticket .remove:hover {
+	color: red;
+}
+.message {
+	width: calc(100% - 1rem * 2 - 1rem);
+	max-height: calc(100% - 1rem * 2 - 1rem);
+	margin: 0 1rem 2rem 1rem;
+	padding: 0;
+}
+.date {
+	position: absolute;
+	bottom: 1rem;
+	right: 1rem;
+	margin: 0;
+	padding: 0;
+	width: max-content;
+	color: var(--alt-color);
+}
+
+@media screen and (max-width: 1195px) {
+	.content {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem 1rem 2rem 1rem;
+	}
+	.content section {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem;
+	}
+	.content section > .container:nth-child(2) {
+		flex-direction: column;
+		width: 100%;
+	}
+	.properties, .content section > .container canvas {
+		width: 100%;
+	}
+}

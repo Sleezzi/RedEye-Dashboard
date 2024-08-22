@@ -86,6 +86,6 @@ section[id="customList"] .input {
 @media screen and (max-width: 1195px) {
 	.content {
 		width: calc(100% - 1rem * 2);
-		padding: 1rem;
+		padding: 1rem 1rem 2rem 1rem;
 	}
 }

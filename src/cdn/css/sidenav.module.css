@@ -1,7 +1,7 @@
 .sidenav {
 	position: relative;
 	left: 0;
-	top: 0;
+	bottom: 0;
 	height: calc(100% - 1rem * 2);
 	width: calc(15rem - 1.5rem * 2);
 	padding: 1rem 1.5rem;
@@ -29,16 +29,52 @@
 	width: 70%;
 }
 
+.containerGuild {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 5rem;
+	width: calc(100% - 1rem * 2);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	padding: 1rem;
+	overflow: hidden;
+	background: #0000005F;
+}
+.containerGuild .icon {
+	border-radius: 100%;
+	border: .2rem solid var(--alt-color);
+	width: 3rem;
+	height: 3rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--background);
+}
+.containerGuild h3:not(.icon) {
+	height: 100%;
+	width: 60%;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+	text-align: center;
+	text-overflow: ellipsis;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
 #close {
 	display: none;
 	opacity: 0;
 	width: 100%;
-	height: 100%;
+	height: 90%;
 	margin: 0;
 	position: fixed;
 	left: 0;
-	top: 0;
+	bottom: 0;
 	z-index: 3;
+	cursor: unset;
 
 }
 #close.active {
@@ -49,6 +85,7 @@
 	.sidenav {
 		position: fixed;
 		left: -100%;
+		height: calc(90% - 1rem * 2);
 		z-index: 4;
 	}
 	.sidenav.active {

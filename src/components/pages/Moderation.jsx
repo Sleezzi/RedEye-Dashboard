@@ -47,7 +47,7 @@ function Moderation({ auth, notify }) {
 				<span className="material-symbols-outlined">block</span>
 				<div className={styles.container}>
 					<h3>Automod - Default List</h3>
-					<p>Lorsqu'un message est envoyé et qu'il contient un mot banni le message est supprimé et renvoyé en version censurée</p>
+					<p>When a message is sent and it contains a banned word the message is deleted and sent back in a censored version.</p>
 				</div>
 
 				<button onClick={() => setModules(mods => ({...mods, automod: mods.automod ? {
@@ -63,7 +63,7 @@ function Moderation({ auth, notify }) {
 			<section id="customList">
 				<div className={styles.container}>
 					<h3>Automod - Custom List :</h3>
-					<p>Lorsqu'un message est envoyé et qu'il contient un mot banni le message est supprimé et renvoyé en version censurée</p>
+					<p>When a message is sent and it contains a banned word the message is deleted and sent back in a censored version.</p>
 				</div>
 				<div className={styles.container}>
 					<div className={styles.custom_words_list}>{
@@ -84,7 +84,7 @@ function Moderation({ auth, notify }) {
 						}}>{word}</button>))
 					}</div>
 					<div style={{display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%"}}>
-						<input className={styles.input} type="text" placeholder="Entrer un mot/regex à bloquer" />
+						<input className={styles.input} type="text" placeholder="Enter a word/regex to block" />
 						<button className={styles.addWord} onClick={() => {
 							if (document.querySelector(`.${styles.input}`).value.length === 0) return;
 							const newWords = [...modules.automod.words];
@@ -95,7 +95,7 @@ function Moderation({ auth, notify }) {
 								ignore: mods.automod.ignore
 							}}));
 							document.querySelector(`.${styles.input}`).value = "";
-						}} >Ajouter un mot</button>
+						}} >Add a word</button>
 					</div>
 				</div>
 			</section>
@@ -103,7 +103,7 @@ function Moderation({ auth, notify }) {
 				<span className="material-symbols-outlined">link_off</span>
 				<div className={styles.container}>
 					<h3>Block link</h3>
-					<p>Lorsqu'un message est envoyé et qu'il contient un link le message est supprimé et renvoyé sans le lien</p>
+					<p>When a message is sent and it contains a link the message is deleted and resent without the link</p>
 				</div>
 
 				<button onClick={() => setModules(mods => ({...mods, link: mods.link ? {

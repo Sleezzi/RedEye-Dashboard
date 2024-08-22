@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import Sidenav from "../components/Sidenav";
 import { useEffect, useState } from "react";
 
+import styles from "../cdn/css/guild.module.css";
+
 function Guild({ auth, notify }) {
 	const [sidenav, setSidenav] = useState(false);
 	const guildId = useParams().guildId;
@@ -37,15 +39,15 @@ function Guild({ auth, notify }) {
 			}
 			
 		})();
-	}, []);
+	}, [auth.token, guildId]);
 	useEffect(() => {
 		document.title = `RedEye - ${guildData.name}'s Dashboard`;
 	}, [guildData]);
 	return (
 		<>
 			<Header sidenav={sidenav} setSidenav={setSidenav} />
-			<div style={{ display: "flex", justifyContent: "space-between", height: "90%" }}>
-				<Sidenav sidenav={sidenav} setSidenav={setSidenav} />
+			<div className={styles.container}>
+				<Sidenav sidenav={sidenav} setSidenav={setSidenav} guild={guildData} />
 				<Outlet context={{guild: guildData, setGuild: setGuildData}} notify={notify}/>
 			</div>
 		</>

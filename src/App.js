@@ -15,6 +15,7 @@ import LevelsComponent from "./components/pages/Levels";
 import AnnoucementsComponent from "./components/pages/Annoucements";
 import AutoroleComponent from "./components/pages/Autorole";
 import LogComponent from "./components/pages/Log";
+import TicketsComponent from "./components/pages/Tickets";
 
 import "./cdn/css/main.css";
 
@@ -62,6 +63,7 @@ function App() {
 				<Route path="annoucements"  element={<AnnoucementsComponent auth={auth} notify={notify} />} />
 				<Route path="autorole" element={<AutoroleComponent auth={auth} notify={notify} />}/>
 				<Route path="log" element={<LogComponent auth={auth} notify={notify} />}/>
+				<Route path="tickets" element={<TicketsComponent auth={auth} notify={notify} />}/>
 			</Route>
 			<Route path="*" element={<NotFound />}/>
 		</Routes>
