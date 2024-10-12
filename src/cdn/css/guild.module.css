@@ -1,6 +1,7 @@
 .container {
-    height: 90%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+	height: calc(100% - 4rem);
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	overflow: hidden;
 }

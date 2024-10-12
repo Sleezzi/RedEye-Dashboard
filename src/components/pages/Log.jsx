@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import styles from "../../cdn/css/guild.log.module.css";
+import styles from "../../cdn/css/guild/log.module.css";
 import Save from "../Save";
 
 function Log({ auth, notify }) {
@@ -15,7 +15,7 @@ function Log({ auth, notify }) {
 	
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+			const response = await fetch(`http://localhost:20659/modules?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",

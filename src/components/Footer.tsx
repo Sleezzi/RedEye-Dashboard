@@ -10,7 +10,7 @@ function Footer() {
 					<h4>Bot</h4>
 					<a target="_blank" href="https://redeye.sleezzi.fr">A propos</a>
 					<a target="_blank" href="https://status-redeye.sleezzi.fr">Status</a>
-					<Link to="/docs">Docs</Link>
+					<a target="_blank" href="https://redeye.sleezzi.fr/docs">Docs</a>
 				</div>
 				<div className={styles.partners}>
 					<h4>Powered by</h4>

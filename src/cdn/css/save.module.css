@@ -1,5 +1,6 @@
 .saveContainer {
-	background: var(--alt-background);
+	background: #333;
+	color: #FFF;
 	position: fixed;
 	bottom: -100%;
 	right: 0;
@@ -16,7 +17,13 @@
 .saveContainer.active {
 	bottom: 0;
 }
-#reset {}
+#reset {
+	background: transparent;
+	transition: background .5s ease;
+}
+#reset:hover {
+	background: red;
+}
 #save {
 	background: #248046;
 	position: relative;

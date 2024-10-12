@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import styles from "../../cdn/css/guild.levels.module.css";
+import styles from "../../cdn/css/guild/levels.module.css";
 import Save from "../Save";
+import { AddImageCanvas, Auth, Guild, Notify, User } from "../../interfacies";
 
 const properties = {
 	image: {
@@ -102,31 +103,20 @@ const properties = {
 		size: 50
 	}
 }
-const addImage = async (url) => {
-	return new Promise((resolve, reject) => {
-		const image = new Image();
-		image.onload = () => resolve(image);
-		image.onerror = reject;
-		image.src = url;
-	});
-}
-function Levels({ auth, notify }) {
-	const { guild, setGuild } = useOutletContext();
-	const [modules, setModules] = useState(guild.modules || {
-		levels: {
-			active: true,
-			ignore: ""
-		}
-	});
+function Levels({ auth, notify }: { auth: Auth, notify: Notify }) {
+	const { guild, setGuild, user }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
+	const [levels, setLevels] = useState(guild.modules.levels);
 	
-	useEffect(() => setModules(guild.modules), [guild.modules]);
+	useEffect(() => setLevels(guild.modules.levels), [guild.modules.levels]);
 	useEffect(() => {
 		(async () => {
-			const canvas = document.querySelector("canvas#levels"); // Create an image
+			const canvas: HTMLCanvasElement | null = document.querySelector(`canvas#levels`);
+			if (!canvas) return;
 			canvas.height = properties.image.height;
 			canvas.width = properties.image.width;
 			const ctx = canvas.getContext("2d"); // Initialize canvas
-			const background = await addImage(properties.image.background);
+			if (!ctx) return;
+			const background = await (new AddImageCanvas(properties.image.background).img());
 			ctx.drawImage(background, 0, 0, properties.image.width, properties.image.height); // Draw the background image
 			
 			// Drawn overlay
@@ -171,7 +161,7 @@ function Levels({ auth, notify }) {
 			
 			// Drawn bot logo
 			ctx.beginPath(); // Create a new path
-			const pdpbot = await addImage("/favicon.ico"); // Load the bot's profile image
+			const pdpbot = await (new AddImageCanvas("/favicon.ico").img()); // Load the bot's profile image
 			ctx.arc(properties.pdpBot.x || 0, properties.pdpBot.y || 0, properties.pdpBot.size / 2, 0, Math.PI * 2); // Draw a circle
 			ctx.clip(); // Cut the sheet so that you can only write in this circle
 			ctx.drawImage(pdpbot, properties.pdpBot.x - properties.pdpBot.size / 2, properties.pdpBot.y - properties.pdpBot.size / 2 || 0, properties.pdpBot.size || 0, properties.pdpBot.size || 0); // Draw the bot's profile picture
@@ -188,26 +178,28 @@ function Levels({ auth, notify }) {
 			ctx.closePath(); // Close last path
 			
 			ctx.beginPath(); // Create a new path
-			const pdp = await addImage("/favicon.ico"); // Load member image
+			const pdp = await (new AddImageCanvas(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`).img()); // Load member image
 			ctx.arc(properties.pdp.background.x || 0, properties.pdp.background.y || 0, properties.pdp.image.size || 0, 0, Math.PI * 2); // Draw a circle
 			ctx.save(); // Save the image
 			ctx.clip(); // Cut the sheet so that you can only write in this circle
 			ctx.closePath(); // Close last path
 			ctx.drawImage(pdp, properties.pdp.image.x || 0, properties.pdp.image.y || 0, properties.pdp.image.size * 2 || 0, properties.pdp.image.size * 2 || 0); // Draw the member's profile picture
 		})();
-	}, []);
+	}, [user]);
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+			const response = await fetch(`http://localhost:20659/modules/levels?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: auth.token
 				},
-				body: JSON.stringify(modules)
+				body: JSON.stringify(levels)
 			});
 			if (response.status === 200) {
-				setGuild(oldGuild => ({...oldGuild,
+				const modules = {...guild.modules};
+				modules.levels = levels;
+				setGuild((oldGuild: any) => ({...oldGuild,
 					modules: modules
 				}));
 				return "Success";
@@ -224,16 +216,25 @@ function Levels({ auth, notify }) {
 			<h2>Levels</h2>
 			<div className={styles.container}>
 				<h4>Activate the leveling system:</h4>
-				<button onClick={() => setModules(mods => ({...mods, levels: mods.levels ? {
-						active: !mods.levels.active,
-						ignore: mods.levels.ignore
-					} : {
-						active: true
-					}
-				}))} className={`switch ${modules.levels && modules.levels.active ? "active" : ""}`} />
+				<button onClick={() => setLevels(levels)} className={`switch ${levels && levels.active ? "active" : ""}`} />
 			</div>
+			<h4>Channel</h4>
+			<select name="channel" value={levels && levels.channel ? levels.channel : "none"} onChange={(e) => {
+				if (e.target.selectedOptions[0].value === "none" && levels.channel) {
+					const l = {...levels};
+					delete l.channel
+					setLevels(l);
+					return;
+				}
+				setLevels(l => ({...l, channel: e.target.selectedOptions[0].value}));
+			}}>
+				{levels.channel ? <option value="none">None</option> : <option disabled value="none">None</option>}
+				{
+					guild.channels?.filter(channel => channel.type === 0 && (channel.permissions & 2048) === 2048).map(channel => levels.channel === channel.id ? <option disabled key={channel.id} value={channel.id}>{channel.name}</option> : <option key={channel.id} value={channel.id}>{channel.name}</option>)
+				}
+			</select>
 			<canvas id="levels" />
-			<Save comparator={JSON.stringify(guild.modules) !== JSON.stringify(modules)} reset={() => setModules(guild.modules)} save={save} />
+			<Save comparator={JSON.stringify(guild.modules.levels) !== JSON.stringify(levels)} reset={() => setLevels(guild.modules.levels)} save={save} />
 		</main>
 	);
 }

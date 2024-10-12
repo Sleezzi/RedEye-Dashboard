@@ -1,6 +1,6 @@
 .header {
 	width: 100%;
-	height: 10%;
+	height: 4rem;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -15,17 +15,45 @@
 	overflow: hidden;
 	border-radius: .5rem;
 	width: 2.5rem;
+	min-width: 40px;
 	height: 2.5rem;
-	display: none;
-	justify-content: space-between;
-	align-items: center;
-	flex-direction: column;
+	min-height: 40px;
 	background: none;
+	position: relative;
+	display: none;
 }
 #sidenav span {
+	position: absolute;
 	background: var(--color);
 	height: 25%;
 	width: 100%;
+	top: 0;
+	left: 0;
+	transform: rotate(0);
+	opacity: 1;
+	transition: all .5s ease;
+}
+#sidenav span:nth-child(2) {
+	top: calc(50% - 25% / 2);
+}
+#sidenav span:nth-child(3) {
+	top: calc(100% - 25%);
+}
+#sidenav.active span:nth-child(1) {
+	background: red;
+	top: calc(50% - 25% / 2);
+	transform: rotateZ(45deg);
+}
+#sidenav.active span:nth-child(2) {
+	background: red;
+	top: calc(50% - 25% / 2);
+	transform: rotateZ(-45deg);
+}
+#sidenav.active span:nth-child(3) {
+	width: 0;
+	top: 100%;
+	left: 50%;
+	opacity: 0;
 }
 .header a {
 	color: var(--alt-color);
@@ -53,46 +81,23 @@
 	height: 2rem;
 }
 .margin {
-	height: 10%;
+	height: 4rem;
 	width: 100%;
 }
-
 #disconnect {
-	position: relative;
-	background: #00000050;
-	color: var(--alt-color);
-	padding: 1rem;
-	border-radius: 5rem;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	align-items: center;
-	height: 60%;
-	width: 10rem;
-	overflow: hidden;
+	height: 2.5rem;
+	width: 2.5rem;
+	border-radius: 100vh;
+	color: var(--color);
+	background: #00000050;
 	transition: background .5s ease, color .5s ease;
 }
 #disconnect:hover {
-	color: var(--color);
+	color: white;
 	background: red;
-}
-#disconnect span {
-	position: relative;
-	right: -100%;
-	width: 10%;
-	transition: right .5s ease;
-}
-#disconnect:hover span {
-	display: inline-block;
-	right: 0;
-}
-
-#disconnect div {
-	position: relative;
-	right: -10%;
-	transition: right .5s ease;
-}
-#disconnect:hover div {
-	right: 0;
 }
 
 @media screen and (max-width: 1195px) {
@@ -104,12 +109,5 @@
 		height: 2.5rem;
 		width: 2.5rem;
 		padding: 0;
-	}
-	#disconnect div {
-		display: none;
-	}
-	#disconnect span {
-		width: 100%;
-		position: static;
 	}
 }

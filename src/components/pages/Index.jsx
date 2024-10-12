@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import styles from "../../cdn/css/guild.index.module.css";
+import styles from "../../cdn/css/guild/index.module.css";
 import Save from "../Save";
 
 function Index({ auth, notify }) {
@@ -8,7 +8,7 @@ function Index({ auth, notify }) {
 	const [prefix, setPrefix] = useState(guild.prefix);
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/guild/setPrefix?id=${guild.id}&prefix=${prefix}`, {
+			const response = await fetch(`http://localhost:20659/guild/setPrefix?id=${guild.id}&prefix=${prefix}`, {
 				method: "PUT",
 				headers: {
 					Authorization: auth.token

@@ -1,0 +1,27 @@
+.inputContainer {
+	position: relative;
+	margin: 0 !important;
+	background: none !important;
+}
+
+.inputContainer textarea {
+	min-width: calc(100% - .5rem * 2);
+	max-width: calc(100% - .5rem * 2);
+	min-height: 1.5rem;
+	height: 100%;
+	margin: 0;
+	padding: .25rem .5rem;
+}
+.maxLength {
+	position: absolute;
+	right: .5rem;
+	bottom: .5rem;
+	text-shadow: 1px 0 0 #000, 0 1px 0 #000, -1px 0 0 #000, 0 -1px 0 #000;
+	transition: color .5s ease, font-size .5s ease;
+}
+.maxLength.active {
+	color: #ff4141;
+	font-size: 105%;
+	/* text-shadow: none; */
+	/* text-shadow: 1px 0 0 var(--color), 0 1px 0 var(--color), -1px 0 0 var(--color), 0 -1px 0 var(--color); */
+}

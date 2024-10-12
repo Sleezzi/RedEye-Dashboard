@@ -1,0 +1,50 @@
+.content {
+	width: calc(100% - 5rem * 2);
+	padding: 1rem 5rem;
+	overflow: hidden auto;
+}
+.container select {
+	width: 90%;
+	height: 2.5rem;
+}
+.container {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.roleContainer {
+	position: relative;
+	background: var(--alt-background);
+	padding: 1rem;
+	width: calc(100% - 1rem * 2);
+	border-radius: .5rem;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	margin: 1rem 0;
+}
+.roleContainer select, .roleContainer textarea {
+	background: var(--alt-2-background);
+}
+.remove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	transition: color .5s ease;
+}
+.remove:hover {
+	color: red;
+}
+@media screen and (max-width: 1195px) {
+	.content {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem 1rem 2rem 1rem;
+	}
+	.container {
+		justify-content: space-evenly;
+	}
+	.container select {
+		width: 80%;
+	}
+}

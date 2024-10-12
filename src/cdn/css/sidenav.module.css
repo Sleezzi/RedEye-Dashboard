@@ -1,13 +1,15 @@
 .sidenav {
-	position: relative;
-	left: 0;
-	bottom: 0;
-	height: calc(100% - 1rem * 2);
-	width: calc(15rem - 1.5rem * 2);
-	padding: 1rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: calc(100% - 1rem);
+	width: 20rem;
+	padding: 1rem 0 0 0;
 	background: var(--alt-background);
 	border-right: 1px solid var(--alt-background);
 	transition: left .5s ease;
+	overflow: hidden;
 	z-index: 2;
 }
 .sidenav a {
@@ -28,12 +30,14 @@
 .sidenav a h3 {
 	width: 70%;
 }
-
+.container {
+	height: calc(100% - 5rem);
+	width: calc(100% - 1.5rem * 2);
+	padding: 0 1.5rem;
+	overflow: hidden auto;
+}
 .containerGuild {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	height: 5rem;
+	height: calc(5rem - 1rem * 2);
 	width: calc(100% - 1rem * 2);
 	display: flex;
 	justify-content: space-around;
@@ -53,16 +57,14 @@
 	background: var(--background);
 }
 .containerGuild h3:not(.icon) {
-	height: 100%;
 	width: 60%;
-	padding: 0;
+	max-width: calc(100% - 3rem - 1rem);
+	padding: 1rem;
 	margin: 0;
 	overflow: hidden;
 	text-align: center;
 	text-overflow: ellipsis;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	text-wrap: nowrap;
 }
 #close {
 	display: none;
@@ -85,10 +87,12 @@
 	.sidenav {
 		position: fixed;
 		left: -100%;
-		height: calc(90% - 1rem * 2);
+		width: 0;
+		height: calc(100% - 1rem - 4rem);
 		z-index: 4;
 	}
 	.sidenav.active {
 		left: 0;
+		width: 15rem;
 	}
 }

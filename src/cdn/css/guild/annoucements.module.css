@@ -1,9 +1,4 @@
 .content {
-	width: calc(100% - 5rem * 2);
-	padding: 1rem 5rem;
-	overflow: hidden auto;
-}
-.content section {
 	height: max-content;
 	width: calc(100% - 2rem * 2);
 	padding: 1rem 2rem;
@@ -12,7 +7,6 @@
 	justify-content: space-around;
 	flex-direction: column;
 	align-items: center;
-	background: var(--alt-background);
 	border-radius: 1rem;
 	overflow: hidden;
 }
@@ -31,30 +25,36 @@
 	width: calc(50% - 2rem);
 	display: flex;
 	justify-content: space-around;
-	align-items: stretch;
 	flex-direction: column;
 }
-.properties * {
+.properties select {
 	margin: 1rem 0;
 	height: 2.5rem;
 }
+.properties input {
+	width: 100%;
+}
 .content canvas {
 	width: 50%;
+	margin: 1rem;
+}
+canvas:not(.loading) {
+	filter: blur(0);
+	transition: filter .5s ease;
+}
+canvas.loading {
+	filter: blur(1rem);
 }
 @media screen and (max-width: 1195px) {
 	.content {
 		width: calc(100% - 1rem * 2);
-		padding: 1rem 1rem 2rem 1rem;
-	}
-	.content section {
-		width: calc(100% - 1rem * 2);
 		padding: 1rem;
 	}
-	.content section > .container:nth-child(2) {
+	.content > .container:nth-child(2) {
 		flex-direction: column;
 		width: 100%;
 	}
-	.properties, .content section > .container canvas {
+	.properties, .content > .container canvas {
 		width: 100%;
 	}
 }

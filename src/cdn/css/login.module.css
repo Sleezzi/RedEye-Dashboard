@@ -1,0 +1,23 @@
+
+.root {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 100vh;
+	width: 100%;
+}
+
+.login {
+	background: var(--main-color);
+	color: var(--color);
+	padding: .5rem 1rem;
+	border-radius: .25rem;
+	transition: background .5s ease, border-radius .25s ease;
+}
+
+.login:hover {
+	background: var(--main-alt-color);
+	color: var(--color);
+	border-radius: .5rem;
+}
