@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useParams, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Sidenav from "../components/Sidenav";
 import { useEffect, useState } from "react";
@@ -11,21 +11,19 @@ function Guild({ auth, notify }: { auth: Auth, notify: Notify }) {
 	const [user, setUser] = useState<User>();
 	const guildId = useParams().guildId;
 	const [guildData, setGuildData] = useState<GuildInterface | undefined>();
+	const [error, setError] = useState<boolean>(false);
 	
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await fetch(`http://localhost:20659/guild?id=${guildId}`, {
+				const response = await fetch(`https://api-redeye.sleezzi.fr/guild?id=${guildId}`, {
 					headers: {
 						Authorization: auth.token
 					}
 				});
 				if (response.status === 401) {
-					window.location.reload();
-					return;
-				}
-				if (response.status === 400) {
-					window.location.href = `https://discord.com/oauth2/authorize?client_id=1195058289931726848&permissions=1153933091732599&response_type=token&redirect_uri=https%3A%2F%2Fmanage-redeye.sleezzi.fr&integration_type=0&scope=identify+bot&guild_id=${guildId}`;
+					document.title = "RedEye";
+					setError(true);
 					return;
 				}
 				const data: GuildInterface = await response.json();
@@ -44,6 +42,14 @@ function Guild({ auth, notify }: { auth: Auth, notify: Notify }) {
 	useEffect(() => {
 		document.title = `RedEye - ${guildData?.name}'s Dashboard`;
 	}, [guildData?.name]);
+	if (error) return (<div className={styles.errorContainer}>
+		<h2>The bot is not on this server</h2>
+		<h3>To edit the bot's actions on this server you must first add it to the server</h3>
+		<div className={styles.buttons}>
+			<Link className={styles.back} to={`/`}>Back</Link>
+			<Link className={styles.login} to={`/invite/${guildId}`}>Add the bot</Link>
+		</div>
+	</div>)
 	if (!guildData) return <>Please wait...</>;
 	return (
 		<>

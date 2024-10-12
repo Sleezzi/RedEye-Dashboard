@@ -29,7 +29,7 @@ function Autonick({ auth, notify }: {auth: Auth, notify: Notify}) {
 
 	const save = async () => {
 		try {
-			const response = await fetch(`http://localhost:20659/modules/autonick?id=${guild.id}`, {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/modules/autonick?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",

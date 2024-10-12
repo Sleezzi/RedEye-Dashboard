@@ -91,7 +91,7 @@ function Join({ auth, notify }: { auth: Auth, notify: Notify }) {
 	useEffect(() => setJoin(guild.modules.join), [guild.modules.join]);
 	
 	const save = async () => {
-		const response = await fetch(`http://localhost:20659/modules/join?id=${guild.id}`, {
+		const response = await fetch(`https://api-redeye.sleezzi.fr/modules/join?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",

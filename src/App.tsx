@@ -6,6 +6,7 @@ import Notify from "./components/Notify";
 import NotFound from "./pages/404";
 import Login from "./pages/Login";
 import Index from "./pages/Index";
+import Invite from "./pages/Invite";
 import Guild from "./pages/Guild";
 
 import GuildIndexComponent from "./components/pages/Index";
@@ -43,8 +44,11 @@ function App() {
 		if (!auth) return;
 		localStorage.setItem("auth", JSON.stringify(auth));
 	}, [auth]);
-	
-	if (!auth || !auth?.token || auth.expireAt <= Math.floor(Date.now() / 1000)) return (<Login />);
+	if (!auth || !auth?.token || auth.expireAt <= Math.floor(Date.now() / 1000)) return (<Routes>
+		<Route path="" element={<Login />}/>
+		<Route path="*" element={<Login />}/>
+		<Route path="invite" element={<Invite />}/>
+	</Routes>);
 	
 	const notify: NotifyInterface = (title, message, duration) => {
 		if (!title || !message || !duration) return;
@@ -59,6 +63,7 @@ function App() {
 	return (<>
 		<Routes>
 			<Route path="" element={<Index auth={auth} notify={notify} />}/>
+			<Route path="invite/:guild" element={<Invite />}/>
 			<Route path="guild/:guildId"  element={<Guild auth={auth} notify={notify} />}>
 				<Route path="" element={<GuildIndexComponent auth={auth} notify={notify} />}/>
 				<Route path="moderation" element={<ModerationComponent auth={auth} notify={notify} />}/>

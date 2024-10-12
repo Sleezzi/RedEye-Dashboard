@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "../cdn/css/login.module.css";
 function Login() {
 	const params = new URLSearchParams(window.location.hash.substring(1));
@@ -17,7 +18,7 @@ function Login() {
 	return (<div className={styles.root}>
 		<h2>You must be logged in to go further</h2>
 		<h3>To access the dashboard you must connect to Discord</h3>
-		<a className={styles.login} href={`https://discord.com/oauth2/authorize?client_id=1195058289931726848&response_type=token&redirect_uri=${encodeURIComponent(window.location.origin)}&integration_type=0&scope=guilds+identify`}>Login</a>
+		<Link className={styles.login} to={`/invite`}>Login</Link>
 	</div>);
 }
 export default Login;

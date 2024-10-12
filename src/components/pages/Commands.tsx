@@ -11,7 +11,7 @@ function Commands({ auth, notify }: {auth: Auth, notify: Notify}) {
 	const [customCommands, setCustomCommands] = useState(Object.entries(guild.commands.custom));
 	const save = async () => {
 		try {
-			const response = await fetch(`http://localhost:20659/commands/disabled?id=${guild.id}`, {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/commands/disabled?id=${guild.id}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -89,7 +89,7 @@ function Commands({ auth, notify }: {auth: Auth, notify: Notify}) {
 								<button className={styles.save} onClick={(e: any) => {
 									if (e.target.disabled) return;
 									e.target.disabled = true;
-									fetch(`http://localhost:20659/commands/new?id=${guild.id}`, {
+									fetch(`https://api-redeye.sleezzi.fr/commands/new?id=${guild.id}`, {
 										method: "POST",
 										headers: {
 											Authorization: auth.token

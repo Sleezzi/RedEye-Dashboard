@@ -19,7 +19,7 @@ function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
 	
 	const save = async () => {
 		try {
-			const response = await fetch(`http://localhost:20659/setTickets?id=${guild.id}`, {
+			const response = await fetch(`https://api-redeye.sleezzi.fr/setTickets?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
