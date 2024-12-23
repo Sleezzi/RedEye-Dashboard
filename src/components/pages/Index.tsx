@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/index.module.css";
 import Save from "../Save";
+import { Client, Guild, User } from "../../interfacies";
 
-function Index({ auth, notify }) {
-	const { guild,setGuild } = useOutletContext();
+function Index({ token, client }: { token: string, client: Client }) {
+	const { guild,setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
 	const [prefix, setPrefix] = useState(guild.prefix);
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/guild/setPrefix?id=${guild.id}&prefix=${prefix}`, {
+			const response = await fetch(`${client.url}/setPrefix?id=${guild.id}&prefix=${prefix}`, {
 				method: "PUT",
 				headers: {
-					Authorization: auth.token
+					authorization: token
 				}
 			});
 			if (response.status === 200) {
-				setGuild(oldGuild => ({...oldGuild,
+				setGuild((oldGuild: any) => ({...oldGuild,
 					prefix: prefix
 				}));
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
@@ -34,7 +33,7 @@ function Index({ auth, notify }) {
 			<h2>Prefix</h2>
 			<input className={styles.prefix} type="text" value={prefix} onChange={(e) => {
 				if (e.target.value.length > 3) return;
-				if (/@|#|:|\`|\\|\||\*|\/| /.test(e.target.value)) return;
+				if (/@|#|:|\`|\\|\||\*|\/| |_/.test(e.target.value)) return;
 				setPrefix(e.target.value.toLowerCase());
 			}}/>
 			<div className={styles.container}>

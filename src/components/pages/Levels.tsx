@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/levels.module.css";
 import Save from "../Save";
-import { AddImageCanvas, Auth, Guild, Notify, User } from "../../interfacies";
+import { AddImageCanvas, Client, Guild, User } from "../../interfacies";
 
 const properties = {
 	image: {
@@ -103,11 +103,11 @@ const properties = {
 		size: 50
 	}
 }
-function Levels({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Levels({ token, client }: { token: string, client: Client }) {
 	const { guild, setGuild, user }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
-	const [levels, setLevels] = useState(guild.modules.levels);
+	const [levels, setLevels] = useState(guild.modules.levels ? guild.modules.levels : { active: false, channel: "" });
 	
-	useEffect(() => setLevels(guild.modules.levels), [guild.modules.levels]);
+	useEffect(() => console.log(levels), [levels]);
 	useEffect(() => {
 		(async () => {
 			const canvas: HTMLCanvasElement | null = document.querySelector(`canvas#levels`);
@@ -188,26 +188,24 @@ function Levels({ auth, notify }: { auth: Auth, notify: Notify }) {
 	}, [user]);
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules/levels?id=${guild.id}`, {
+			const response = await fetch(`${client.url}/modules/levels?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: auth.token
+					authorization: token
 				},
 				body: JSON.stringify(levels)
 			});
 			if (response.status === 200) {
 				const modules = {...guild.modules};
-				modules.levels = levels;
+				modules.levels = levels as any;
 				setGuild((oldGuild: any) => ({...oldGuild,
 					modules: modules
 				}));
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
@@ -216,21 +214,15 @@ function Levels({ auth, notify }: { auth: Auth, notify: Notify }) {
 			<h2>Levels</h2>
 			<div className={styles.container}>
 				<h4>Activate the leveling system:</h4>
-				<button onClick={() => setLevels(levels)} className={`switch ${levels && levels.active ? "active" : ""}`} />
+				<button onClick={() => setLevels(lvl => ({...lvl, active: !lvl.active, channel: !lvl.active === true && lvl.channel ? lvl.channel : "" }))} className={`switch ${levels.active ? "active" : ""}`} />
 			</div>
 			<h4>Channel</h4>
-			<select name="channel" value={levels && levels.channel ? levels.channel : "none"} onChange={(e) => {
-				if (e.target.selectedOptions[0].value === "none" && levels.channel) {
-					const l = {...levels};
-					delete l.channel
-					setLevels(l);
-					return;
-				}
-				setLevels(l => ({...l, channel: e.target.selectedOptions[0].value}));
-			}}>
-				{levels.channel ? <option value="none">None</option> : <option disabled value="none">None</option>}
+			<select name="channel" value={levels.channel !== "" ? levels.channel : "none"} onChange={(e) => setLevels(l => ({...l, channel: e.target.selectedOptions[0].value, active: true}))}>
+				<option disabled value="none">None</option>
 				{
-					guild.channels?.filter(channel => channel.type === 0 && (channel.permissions & 2048) === 2048).map(channel => levels.channel === channel.id ? <option disabled key={channel.id} value={channel.id}>{channel.name}</option> : <option key={channel.id} value={channel.id}>{channel.name}</option>)
+					guild.channels
+					?.filter((channel) => channel.type === 0 && (channel.permissions & 2048) === 2048)
+					.map((channel) => levels.channel === channel.id ? <option disabled key={channel.id} value={channel.id}>{channel.name}</option> : <option key={channel.id} value={channel.id}>{channel.name}</option>)
 				}
 			</select>
 			<canvas id="levels" />

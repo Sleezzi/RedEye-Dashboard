@@ -1,0 +1,59 @@
+.content {
+	width: calc(100% - 5rem * 2);
+	padding: 1rem 5rem;
+	overflow: hidden auto;
+}
+.container a {
+	display: inline-flex;
+	justify-content: start;
+	align-items: center;
+	color: var(--color);
+	width: 100%;
+	transition: background .5s ease;
+}
+.container a img {
+	width: 2rem;
+	height: 2rem;
+	margin: 0 2rem 0 2rem;
+}
+.container a:hover {
+	color: var(--color);
+	background: var(--alt-background);
+}
+.container a h2 {
+	width: 15rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.container a h5 {
+	width: calc(100% - 15rem);
+	text-align: end;
+}
+.content select {
+	width: 100%;
+	height: 2.5rem;
+}
+.channel {
+	width: calc(100% - 3rem - 1.5rem);
+}
+.channelIcon {
+	height: 3rem;
+	width: 3rem;
+	border-radius: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: var(--alt-background);
+}
+@media screen and (max-width: 1195px) {
+	.content {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem 1rem 2rem 1rem;
+	}
+	.container {
+		justify-content: space-evenly;
+	}
+	.container select {
+		width: 80%;
+	}
+}

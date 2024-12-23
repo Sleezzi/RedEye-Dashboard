@@ -59,6 +59,10 @@ function Sidenav({ sidenav, setSidenav, guild }: { sidenav: boolean, setSidenav:
 					<span className="material-symbols-outlined">local_activity</span>
 					<h3>Tickets</h3>
 				</Link>
+				<Link to="rss">
+					<span className="material-symbols-outlined">rss_feed</span>
+					<h3>RSS</h3>
+				</Link>
 			</div>
 			<div className={styles.containerGuild}>
 				{guild.icon ? <img className={styles.icon} src={`https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`} alt={`Icon of ${guild.name}`} /> : <h2 className={styles.icon}>{guild.name.replace(/\W&^ /g, "").toUpperCase().split(" ", 3).map(string => string[0]).join("")}</h2>}

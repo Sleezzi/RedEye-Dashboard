@@ -66,6 +66,13 @@ input, textarea {
 input::placeholder, textarea::placeholder {
 	color: var(--alt-color);
 }
+span.material-symbols-outlined::selection, button::selection, img::selection {
+	background: transparent;
+}
+::selection {
+	background: var(--main-color);
+	color: var(--color);
+}
 ::-webkit-scrollbar {
 	width: 1vh;
 	height: 1vh;
@@ -85,6 +92,9 @@ input::placeholder, textarea::placeholder {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	background: #aaa;
+}
+p.small {
+	font-size: small;
 }
 aria-label {
 	display: none;
@@ -163,4 +173,10 @@ aria-label::after {
 }
 .switch.active {
 	background: green;
+}
+
+.loadingBar {
+	background: var(--main-color);
+	height: 3px;
+	transition: width .5s ease;
 }

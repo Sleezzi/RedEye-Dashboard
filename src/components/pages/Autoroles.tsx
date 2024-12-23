@@ -2,22 +2,22 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/autorole.module.css";
 import Save from "../Save";
-import { Auth, Guild, Notify } from "../../interfacies";
+import { Autorole as AutoroleInterface, Client, Guild } from "../../interfacies";
 
-function Autorole({ auth, notify }: {auth: Auth, notify: Notify}) {
+function Autorole({ token, client }: {token: string, client: Client}) {
 	const { guild, setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>> } = useOutletContext();
-	const [autoroles, setAutoroles] = useState<any>(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", value: "$user"});
+	const [autoroles, setAutoroles] = useState<AutoroleInterface>(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", type: "human"});
 	
 	
 	// const addAutorole = () => {
 	// 	if (!autoroles) {
-	// 		return notify("Error", "Please retry...", 5);
+	// 		return;
 	// 	}
 	// 	if (autoroles?.find((role) => role.role === "unset")) {
-	// 		return notify("Error", "Vous avez déjà un rôle vierge créé, modifiez-le et enregistrez-le pour créer un nouvel autorole", 5);
+	// 		return;
 	// 	}
 	// 	if (autoroles?.length === 3) {
-	// 		return notify("Error", "Vous avez atteint le nombre maximal d'autoroles", 5);
+	// 		return;
 	// 	}
 	// 	const newAutoroles = [...autoroles];
 	// 	newAutoroles.unshift({
@@ -29,26 +29,24 @@ function Autorole({ auth, notify }: {auth: Auth, notify: Notify}) {
 	
 	const save = async () => {
 		try {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/modules/autoroles?id=${guild.id}`, {
-			method: "PUT",
-			headers: {
-			"Content-Type": "application/json",
-			Authorization: auth.token
-			},
-			body: JSON.stringify([autoroles])
-		});
-		if (response.status === 200) {
-			const modules = {...guild.modules};
-			if (!modules.autoroles) modules.autoroles = [];
-			modules.autoroles[0] = autoroles;
-			setGuild((oldGuild: any) => ({...oldGuild, modules }));
-			return "Success";
-		}
-		notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
-		return "Error";
+			const response = await fetch(`${client.url}/modules/autoroles?id=${guild.id}`, {
+				method: "PUT",
+				headers: {
+				"Content-Type": "application/json",
+				authorization: token
+				},
+				body: JSON.stringify([autoroles])
+			});
+			if (response.status === 200) {
+				const modules = {...guild.modules};
+				if (!modules.autoroles) modules.autoroles = [];
+				modules.autoroles[0] = autoroles;
+				setGuild((oldGuild: any) => ({...oldGuild, modules }));
+				return "Success";
+			}
+			return "Error";
 		} catch (error) {
-		notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
-		return "Error";
+			return "Error";
 		}
 	}
 	
@@ -57,10 +55,10 @@ function Autorole({ auth, notify }: {auth: Auth, notify: Notify}) {
 		<h2>Autorole</h2>
 		<div className={styles.roleContainer}>
 				<h3>Role</h3>
-				<select name="role" value={autoroles.role} onChange={(e) => 
+				<select name="role" value={autoroles?.role} onChange={(e) => 
 					setAutoroles((roles: any) => ({...roles, role: e.target.value}))
 				}>
-				{autoroles.role === "unset" ? <option value="unset" disabled>Please choose a role</option> : <option disabled value={autoroles.role}>{guild.roles.find(role => role.id === autoroles.role)?.name}</option>}
+				{autoroles?.role === "unset" ? <option value="unset" disabled>Please choose a role</option> : <option disabled value={autoroles.role}>{guild.roles.find(role => role.id === autoroles.role)?.name}</option>}
 				{
 					guild.roles
 					.filter((role) => !role.name.startsWith("@") && role.id !== autoroles.role)
@@ -90,8 +88,8 @@ function Autorole({ auth, notify }: {auth: Auth, notify: Notify}) {
 				}
 				</select>
 			</div>
-		<Save comparator={JSON.stringify(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", value: "$user"}) !== JSON.stringify(autoroles)} reset={() => {
-			setAutoroles(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", value: "$user"});
+		<Save comparator={JSON.stringify(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", type: "human"}) !== JSON.stringify(autoroles)} reset={() => {
+			setAutoroles(guild.modules.autoroles ? guild.modules.autoroles[0] : {role: "unset", type: "human"});
 		}} save={save} />
 		{/* <button onClick={addAutorole}>Add a role</button>
 		{

@@ -8,6 +8,17 @@
 	align-content: center;
 	padding: 5rem;
 }
+.container h4 {
+	margin: 0 .25rem;
+	background: var(--alt-background);
+	border-radius: .25rem;
+	color: var(--alt-color);
+}
+.container h4 b {
+	font-weight: bolder;
+	color: var(--color);
+}
+
 .guild {
 	background: var(--alt-background);
 	height: 10rem;
@@ -63,23 +74,4 @@
 	right: 1rem;
 	bottom: 3.5rem;
 	border-radius: .25rem;
-}
-.guild:hover {
-	background: var(--alt-2-background);
-}
-
-.guild:hover .icon {
-	border: .25rem solid var(--alt-2-background);
-}
-.guild:hover h3 {
-	color: var(--color);
-}
-
-@media screen and (max-width: 1195px) {
-	.container {
-		min-height: calc(100% - 2rem * 2);
-		width: calc(100% - 2rem * 2);
-		padding: 2rem;
-		justify-items: center;
-	}
 }

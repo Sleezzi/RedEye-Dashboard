@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/annoucements.module.css";
 import Save from "../Save";
 import Input from "../InputComponent";
-import { AddImageCanvas, Auth, Guild, Notify, User } from "../../interfacies";
+import { AddImageCanvas, Client, Guild, User } from "../../interfacies";
 
 const properties = {
 	image: {
@@ -84,18 +84,18 @@ const properties = {
 		size: 50
 	}
 }
-function Leave({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Leave({ token, client }: { token: string, client: Client }) {
 	const { guild, setGuild, user }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
 	const [leave, setLeave] = useState<Guild["modules"]["leave"]>(guild.modules.leave);
 	
 	useEffect(() => setLeave(guild.modules.leave), [guild.modules.leave]);
 	
 	const save = async () => {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/modules/leave?id=${guild.id}`, {
+		const response = await fetch(`${client.url}/modules/leave?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: auth.token
+				authorization: token
 			},
 			body: JSON.stringify(leave)
 		});
@@ -107,7 +107,6 @@ function Leave({ auth, notify }: { auth: Auth, notify: Notify }) {
 			}));
 			return "Success";
 		}
-		notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 		return "Error";
 	}
 	useEffect(() => {

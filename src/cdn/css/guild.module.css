@@ -1,26 +1,26 @@
-.container {
-	height: calc(100% - 4rem);
+.msgContainer {
+	height: 100%;
 	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	overflow: hidden;
-}
-.errorContainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	height: 100vh;
-	width: 100%;
 	text-align: center;
 }
-.errorContainer .buttons {
+.msgContainer .buttons {
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 }
-.errorContainer .buttons a {
+.msgContainer .buttons a {
 	margin: 1rem;
+}
+.container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	overflow: hidden;
 }
 .login {
 	background: var(--main-color);
@@ -29,7 +29,6 @@
 	border-radius: .25rem;
 	transition: background .5s ease, border-radius .25s ease;
 }
-
 .login:hover {
 	background: var(--main-alt-color);
 	color: var(--color);

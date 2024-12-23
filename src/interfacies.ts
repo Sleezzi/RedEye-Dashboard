@@ -1,9 +1,4 @@
-import { PermissionResolvable } from "discord.js";
-
-export interface Auth {
-	token: string,
-	expireAt: number
-}
+import { Integration, PermissionResolvable } from "discord.js";
 
 export interface User {
 	username: string,
@@ -12,9 +7,11 @@ export interface User {
 	id: string
 }
 
-export interface Notify {
-	(title: string, message: string, duration?: number): void;
+export interface Client {
+	id: string,
+	url: string
 }
+
 interface Tickets {
 	[userId: string]: {
 		username: string,
@@ -28,7 +25,17 @@ interface Tickets {
 		}
 	}
 }
-interface Modules {
+export interface Autorole {
+	type: "human" | "bot",
+	role: string
+}
+export interface Autonick {
+	type: "role" | "join",
+	value: string,
+	role?: string
+}
+
+export interface Modules {
 	/**
 	 * The “join” module corresponds to the welcome message sent to a server channel
 	 */
@@ -49,15 +56,8 @@ interface Modules {
 	/**
 	 * The role id that will be given to the new server member
 	 */
-	autoroles?: {
-		type: "human" | "bot",
-		role: string
-	}[];
-	autonick?: {
-		type: "role" | "join",
-		value: string,
-		role?: string
-	}[]
+	autoroles?: Autorole[];
+	autonick?: Autonick[];
 	/**
 	 * The “leave” module corresponds to the message sent to a room when a member leaves the server
 	 */
@@ -171,6 +171,31 @@ export interface Guild {
 		type: 0 | 1 | 2,
 		permissions: number
 	}[],
+	rss: {
+		youtube?: {
+			channelId: string,
+			channelYT: string,
+			message?: string
+		}
+		github: {
+			issues?: {
+				channelId: string,
+				repo: string,
+				user: string,
+				message?: string
+			}
+		}
+		twitch?: {
+			channelId: string,
+			channel: string,
+			message?: string
+		},
+		reddit?: {
+			channelId: string,
+			subreddit: string,
+			message?: string
+		}
+	},
 	modules: Modules,
 	tickets: Tickets,
 	roles: {
@@ -213,4 +238,11 @@ export interface DiscordGuild {
 	owner: boolean,
 	permissions: number,
 	permissions_new: string
+}
+
+export function getCookie(name: string) {
+	let matches = document.cookie.match(new RegExp(
+		"(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	));
+	return matches ? decodeURIComponent(matches[1]) : undefined;
 }

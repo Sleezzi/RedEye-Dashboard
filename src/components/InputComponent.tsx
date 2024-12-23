@@ -3,6 +3,7 @@ import styles from "../cdn/css/input.module.css";
 
 function Input({
 	defaultValue,
+	value,
 	placeholder,
 	maxLength,
 	onChange,
@@ -10,6 +11,7 @@ function Input({
 	className
 }: {
 	defaultValue?: string,
+	value?: string,
 	placeholder?: string,
 	maxLength: number,
 	onChange?: ChangeEventHandler<HTMLTextAreaElement>,
@@ -20,6 +22,7 @@ function Input({
 	return (
 		<div className={className ? `${styles.inputContainer} ${className}` : styles.inputContainer}>
 			<textarea
+				value={value}
 				defaultValue={defaultValue || ""}
 				placeholder={placeholder || ""}
 				maxLength={maxLength}
@@ -29,7 +32,7 @@ function Input({
 				}}
 				style={style || {}}
 			/>
-			<div className={`${styles.maxLength}${length >= maxLength ? ` ${styles.active}` : ""}`}>{length}/{maxLength}</div>
+			<div className={`${styles.maxLength}${length >= maxLength ? ` ${styles.max}` : ""}`}>{length}/{maxLength}</div>
 		</div>
 	)
 }

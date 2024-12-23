@@ -19,11 +19,11 @@ function Header({ sidenav, setSidenav }: { sidenav?: boolean, setSidenav?: React
 				</button>
 			}
 			<Link to="/">
-				<img src="https://redeye.sleezzi.fr/favicon.ico" alt="Home" />
+				<img src={window.location.hostname === "localhost" ? "https://cdn.discordapp.com/icons/1198960595198812221/0f04f3f7d05099a46876954c3c699e51.png" : "https://redeye.sleezzi.fr/favicon.ico"} alt="Home" />
 				<h2>RedEye</h2>
 			</Link>
 			<button id={styles.disconnect} onClick={() => {
-					localStorage.setItem("auth", JSON.stringify({ expireAt: 0 }));
+					document.cookie = "token=null;max-age=-1";
 					window.location.reload();
 				}}>
 					<span className="material-symbols-outlined">logout</span>

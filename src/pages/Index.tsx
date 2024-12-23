@@ -3,22 +3,23 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 
-import { Auth, DiscordGuild, Guild, Notify } from "../interfacies";
+import { DiscordGuild } from "../interfacies";
 
 import styles from "../cdn/css/index.module.css";
+import Loading from "../components/Loading";
+import Transition from "../components/Transition";
 
-function Index({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Index({ token, setLoading }: { token: string, setLoading: React.Dispatch<React.SetStateAction<number>> }) {
 	const [guilds, setGuilds] = useState<DiscordGuild[]>();
 	useEffect(() => {
 		try {
 			fetch("https://discord.com/api/users/@me/guilds", {
 				headers: {
-					Authorization: auth.token
+					authorization: token
 				}
 			})
 			.then(response => {
 				if (response.status !== 200) {
-					notify("Error", `An error occurred while loading data from the server`, 5);
 					return {};
 				}
 				return response.json();
@@ -26,14 +27,12 @@ function Index({ auth, notify }: { auth: Auth, notify: Notify }) {
 			.then((response: any) => {
 				setGuilds(response);
 			});
-		} catch (error) {
-			notify("Error", `An error occurred while loading data from the server`, 5);
-		}
-	}, [auth.token]);
+		} catch (error) {}
+	}, [token]);
 	return (
 		<>
-			<Header sidenav={undefined} setSidenav={undefined} />
-			<main className={styles.container}>
+			<Header />
+			<main className={styles.container} {...{loaded: guilds ? "true" : "false", noserver: guilds?.length === 0 ? "true" : "false"}} >
 				{
 					guilds ?
 					guilds
@@ -45,7 +44,14 @@ function Index({ auth, notify }: { auth: Auth, notify: Notify }) {
 							<img className={styles.role} src={(guild.permissions & 8) === 8 ? "/cdn/img/icon/admin.png" : "/cdn/img/icon/mod.png"} alt="Status" />
 							<h3>{guild.name}</h3>
 						</Link>
-					) : "Please wait..."
+					) : <Loading/>
+				}
+				{
+					guilds?.length === 0 ?  <>
+						<span style={{fontSize: "5rem"}} className="material-symbols-outlined">running_with_errors</span>
+						<h2>There are no servers you can manage</h2>
+						<h3>Create a server then refresh this page</h3>
+					</> : <></>
 				}
 			</main>
 			<Footer />

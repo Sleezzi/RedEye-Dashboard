@@ -3,20 +3,20 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/moderation.module.css";
 import Save from "../Save";
 import Input from "../InputComponent";
-import { Auth, Guild, Notify } from "../../interfacies";
+import { Client, Guild } from "../../interfacies";
 
-function Moderation({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Moderation({ token, client }: { token: string, client: Client }) {
 	const { guild, setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>> } = useOutletContext();
 	const [automod, setAutomod] = useState<Guild["modules"]["automod"]>(guild.modules.automod);
 	const [blockLink, setBlockLink] = useState<Guild["modules"]["link"]>(guild.modules.link);
 	
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules/moderation?id=${guild.id}`, {
+			const response = await fetch(`${client.url}/modules/moderation?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: auth.token
+					authorization: token
 				},
 				body: JSON.stringify({
 					automod,
@@ -30,10 +30,8 @@ function Moderation({ auth, notify }: { auth: Auth, notify: Notify }) {
 				setGuild((oldGuild: any) => ({...oldGuild, modules }));
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}

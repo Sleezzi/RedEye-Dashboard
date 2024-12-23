@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/annoucements.module.css";
 import Save from "../Save";
 import Input from "../InputComponent";
-import { AddImageCanvas, Auth, Guild, Notify, User } from "../../interfacies";
+import { AddImageCanvas, Client, Guild, User } from "../../interfacies";
 
 const properties = {
 	image: {
@@ -84,18 +84,20 @@ const properties = {
 		size: 50
 	}
 }
-function Join({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Join({ token, client }: { token: string, client: Client }) {
 	const { guild, setGuild, user }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
-	const [join, setJoin] = useState<Guild["modules"]["join"]>(guild.modules.join);
-	
-	useEffect(() => setJoin(guild.modules.join), [guild.modules.join]);
+	const [join, setJoin] = useState<Guild["modules"]["join"]>(guild.modules.join || {
+		channelId: "",
+		background: "",
+		message: ""
+	});
 	
 	const save = async () => {
-		const response = await fetch(`https://api-redeye.sleezzi.fr/modules/join?id=${guild.id}`, {
+		const response = await fetch(`${client.url}/modules/join?id=${guild.id}`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: auth.token
+				authorization: token
 			},
 			body: JSON.stringify(join)
 		});
@@ -107,7 +109,6 @@ function Join({ auth, notify }: { auth: Auth, notify: Notify }) {
 			}));
 			return "Success";
 		}
-		notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 		return "Error";
 	}
 	useEffect(() => {
@@ -204,7 +205,15 @@ function Join({ auth, notify }: { auth: Auth, notify: Notify }) {
 				</div>
 				<canvas id="join" />
 			</div>
-			<Save comparator={JSON.stringify(guild.modules.join) !== JSON.stringify(join)} reset={() => setJoin(guild.modules.join)} save={save} />
+			<Save comparator={JSON.stringify(guild.modules.join || {
+				channelId: "",
+				background: "",
+				message: ""
+			}) !== JSON.stringify(join)} reset={() => setJoin(guild.modules.join || {
+				channelId: "",
+				background: "",
+				message: ""
+			})} save={save} />
 		</main>
 	);
 }

@@ -2,14 +2,14 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/tickets.module.css";
 import Save from "../Save";
-import { Auth, Guild, Notify } from "../../interfacies";
+import { Client, Guild } from "../../interfacies";
 
-function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
+function Tickets({ token, client }: { token: string, client: Client }) {
 	const { guild, setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>> } = useOutletContext();
 	const [tickets, setTickets] = useState<Guild["tickets"]>(guild.tickets);
 	const [search, setSearch] = useState<{
 		search: string,
-		type: "content" | "author"
+		type: "content" | "tokenor"
 	}>({
 		search: "",
 		type: "content"
@@ -19,11 +19,11 @@ function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
 	
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/setTickets?id=${guild.id}`, {
+			const response = await fetch(`${client.url}/setTickets?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: auth.token
+					authorization: token
 				},
 				body: JSON.stringify(tickets)
 			});
@@ -31,10 +31,8 @@ function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
 				setGuild((g: any) => ({...g, tickets}))
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
@@ -53,7 +51,7 @@ function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
 					setSearch((s: any) => ({...s, type: e.target.selectedOptions[0].value}))
 				}} >
 					<option value="content">Search by: Content</option>
-					<option value="author">Search by: Author</option>
+					<option value="tokenor">Search by: tokenor</option>
 				</select>
 			</div>
 			<div className={styles.userContainer}>
@@ -62,7 +60,7 @@ function Tickets({ auth, notify }: { auth: Auth, notify: Notify }) {
 					.filter(([userId, user]) => {
 						if (Object.keys(user).length === 0) return false;
 						if (!search?.search) return true;
-						if (search?.type !== "author") return true;
+						if (search?.type !== "tokenor") return true;
 						if (user.username.toLowerCase().includes(search.search.toLowerCase()) || userId.includes(search.search)) return true;
 					})
 					.map(([userId, user]) => 

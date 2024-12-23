@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "../cdn/css/404.module.css";
+import Transition from "../components/Transition";
 
-export default function NotFound() {
+function NotFound() {
 	return (
 		<div className={styles.root} id="ERROR_404">
 			<svg>
@@ -17,3 +18,5 @@ export default function NotFound() {
 		</div>
 	);
 }
+
+export default NotFound;

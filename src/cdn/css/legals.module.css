@@ -1,18 +1,25 @@
-.content {
+.container {
 	width: calc(100% - 5rem * 2);
 	display: flex;
 	flex-direction: column;
 	padding: 3rem 5rem;
+	font-family: "Oswald", serif;
 }
-.content h2 {
+.container h1 {
+	text-align: center;
+}
+.container h2 {
 	margin: 0;
 }
-.content b {
+.container h3 {
+	margin: 0;
+}
+.container b {
 	font-weight: bolder;
 }
 @media screen and (max-width: 1195px) {
-	.content {
-		width: calc(100% - 1rem * 2 + 1rem);
-		padding: 1rem 1rem 1rem 2rem;
+	.container {
+		width: calc(100% - 1rem * 2);
+		padding: 1rem 1rem 1rem;
 	}
 }

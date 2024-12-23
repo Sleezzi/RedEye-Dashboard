@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, InputHTMLAttributes, SetStateAction, useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/log.module.css";
 import Save from "../Save";
+import { Client, Guild, User } from "../../interfacies";
 
-function Log({ auth, notify }) {
-	const { guild, setGuild } = useOutletContext();
+function Log({ token, client }: { token: string, client: Client }) {
+	const { guild, setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>>, user: User } = useOutletContext();
 	const [channels, setChannels] = useState([{ id: "0", name: "Please wait...", type: 0, permissions: 0 }]);
 	const [modules, setModules] = useState(guild.modules || {
 		log: ""
@@ -15,31 +16,29 @@ function Log({ auth, notify }) {
 	
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules?id=${guild.id}`, {
+			const response = await fetch(`${client.url}/modules?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: auth.token
+					authorization: token
 				},
 				body: JSON.stringify(modules)
 			});
 			if (response.status === 200) {
-				setGuild(oldGuild => ({...oldGuild,
+				setGuild((oldGuild: any) => ({...oldGuild,
 					modules: modules
 				}));
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
 	return (
 		<main className={styles.content}>
 			<h2>Log</h2>
-			<h4>{channels.find(channel => channel.id === modules.log) ? <>Current "<b>{channels.find(channel => channel.id === modules.log).name}</b>" (<i>{channels.find(channel => channel.id === modules.log).id}</i>)</> : "Please select a channel"}</h4>
+			<h4>{channels.find(channel => channel.id === modules.log) ? <>Current "<b>{channels?.find(channel => channel.id === modules.log)?.name}</b>" (<i>{channels.find(channel => channel.id === modules.log)?.id}</i>)</> : "Please select a channel"}</h4>
 			<div className={styles.container}>
 				<select id="log" defaultValue="none" onChange={(e) => {
 					if (e.target.selectedOptions[0].value === "none") return;
@@ -51,13 +50,13 @@ function Log({ auth, notify }) {
 					}
 				</select>
 				<button onClick={() => {
-					setModules(mods => ({...mods, log: mods.log ? undefined : guild.modules.log }));
-					document.querySelector(`.${styles.container} select#log`).value = "none";
+					setModules((mods: any) => ({...mods, log: mods.log ? undefined : guild.modules.log }));
+					(document.querySelector(`.${styles.container} select#log`) as HTMLInputElement).value = "none";
 				}} className={`switch ${modules.log ? "active" : ""}`} />
 			</div>
 			<Save comparator={JSON.stringify(guild.modules) !== JSON.stringify(modules)} reset={() => {
 				setModules(guild.modules);
-				document.querySelector(`.${styles.container} select#log`).value = "none";
+				(document.querySelector(`.${styles.container} select#log`) as HTMLInputElement).value = "none";
 			}} save={save} />
 		</main>
 	);

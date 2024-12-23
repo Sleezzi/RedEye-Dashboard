@@ -2,22 +2,22 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import styles from "../../cdn/css/guild/autorole.module.css";
 import Save from "../Save";
-import { Auth, Guild, Notify } from "../../interfacies";
+import { Autonick as AutonickInterface, Client, Guild } from "../../interfacies";
 import Input from "../InputComponent";
 
-function Autonick({ auth, notify }: {auth: Auth, notify: Notify}) {
+function Autonick({ token, client }: {token: string, client: Client}) {
 	const { guild, setGuild }: { guild: Guild, setGuild: Dispatch<SetStateAction<Guild | undefined>> } = useOutletContext();
-	const [autonick, setAutonick] = useState<any>(guild.modules.autonick ? guild.modules.autonick[0] : { type: "join", value: "$user" });
+	const [autonick, setAutonick] = useState<AutonickInterface>(guild.modules.autonick ? guild.modules.autonick[0] : { type: "join", value: "$user" });
 	
 	// const addAutonick = () => {
 	// 	if (!autonick) {
-	// 		return notify("Error", "Please retry...");
+	// 		return;
 	// 	}
 	// 	if (autonick?.find((role) => role.role === "unset")) {
-	// 		return notify("Error", "Vous avez déjà un role vierge créé, modifiez le et enregistrer le pour créer un nouvelle autorole", 5);
+	// 		return;
 	// 	}
 	// 	if (autonick?.length === 3) {
-	// 		return notify("Error", "Vous avez atteint le nombre maximame d'autorole", 5);
+	// 		return;
 	// 	}
 	// 	const newAutonick = [...autonick];
 	// 	newAutonick.unshift({
@@ -29,11 +29,11 @@ function Autonick({ auth, notify }: {auth: Auth, notify: Notify}) {
 
 	const save = async () => {
 		try {
-			const response = await fetch(`https://api-redeye.sleezzi.fr/modules/autonick?id=${guild.id}`, {
+			const response = await fetch(`${client.url}/modules/autonick?id=${guild.id}`, {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
-					Authorization: auth.token
+					authorization: token
 				},
 				body: JSON.stringify([autonick])
 			});
@@ -45,10 +45,8 @@ function Autonick({ auth, notify }: {auth: Auth, notify: Notify}) {
 				setGuild((oldGuild: any) => ({...oldGuild, modules }));
 				return "Success";
 			}
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		} catch (error) {
-			notify("Error", "An error occurred while saving. If the error persists, contact support", 5);
 			return "Error";
 		}
 	}
@@ -78,7 +76,7 @@ function Autonick({ auth, notify }: {auth: Auth, notify: Notify}) {
 				<Input maxLength={20} className={styles.value} defaultValue={autonick.value || ""} onChange={(e) => setAutonick((nick: any) => ({...nick, value: e.target.value}))} />
 			</div>
 			<Save comparator={
-				JSON.stringify(guild.modules.autonick ? guild.modules.autonick[0] : { type: "join", value: ""}) !== JSON.stringify(autonick) &&
+				JSON.stringify(guild.modules.autonick ? guild.modules.autonick[0] : { type: "join", value: "$user"}) !== JSON.stringify(autonick) &&
 				(() => {
 					if (autonick.type === "role") {
 						if (!autonick.role) return false;
